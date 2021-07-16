@@ -1,0 +1,38 @@
+<form style="color:green;">
+  <div class="form-group">
+        <label for="username">Email address</label>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">📧</span>
+        </div>
+        <input type="text" class="form-control" placeholder="your@email.com" aria-label="Username" aria-describedby="basic-addon1" id="username" style="color: green;">
+    </div>
+    
+  </div>
+  <div class="form-group">
+    <label for="Password1">Password</label>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">🔑</span>
+        </div>
+        <input type="password" class="form-control" id="Password1" placeholder="Password" style="color: green;">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="Password2">Confirm Password</label>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">🔑</span>
+        </div>
+        <input type="password" class="form-control" id="Password2" placeholder="Confirm Password" style="color: green;">
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary" @onclick="SignupClicked">Give me savings!</button>
+</form>
+
+@code {
+    private async void SignupClicked()
+    {
+
+    }
+}

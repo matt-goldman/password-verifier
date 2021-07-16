@@ -14,7 +14,7 @@
     <div class="col-lg-6 mx-auto">
         <p class="lead mb-4 text-center">We've teamed up with 1000s of online retailers to bring you the best online discounts for all your favourite brands.</p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Sign Up</button>
+            <button type="button" class="btn btn-primary btn-lg px-4 gap-3" @onclick="ShowSignupModal">Sign Up</button>
         </div>
     </div>
 </div>
@@ -25,9 +25,9 @@
             <div class="card my-2" style="width: 18rem;">
                 <img class="card-img-top" src="/images/tech-alt.jpg" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">Tech</h5>
+                    <h5 class="card-title highlight-discount product-title">Tech</h5>
                     <p class="card-text">Savings of up to <span class="highlight-discount">35%</span> on top technology brands including Sony, Nintendo and even Apple.</p>
-                    <a href="#" class="btn btn-primary">Sign up to see deals</a>
+                    <a href="#" class="btn btn-primary" @onclick="ShowSignupModal">See deals</a>
                 </div>
             </div>
         </div>
@@ -36,9 +36,9 @@
             <div class="card my-2" style="width: 18rem;">
                 <img class="card-img-top" src="/images/fashion.jpg" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">Fashion</h5>
+                    <h5 class="card-title highlight-discount product-title">Fashion</h5>
                     <p class="card-text">Some of the best deals around with savings up to <span class="highlight-discount">65%</span> from all your favorite fashion brands and retailers.</p>
-                    <a href="#" class="btn btn-primary">Sign up to see deals</a>
+                    <a href="#" class="btn btn-primary" @onclick="ShowSignupModal">See deals</a>
                 </div>
             </div>
         </div>
@@ -47,9 +47,9 @@
             <div class="card my-2" style="width: 18rem;">
                 <img class="card-img-top" src="/images/home.jpg" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">Home & Garden</h5>
+                    <h5 class="card-title highlight-discount product-title">Home & Garden</h5>
                     <p class="card-text">We've got amazing discounts on Home & Garden, with savings up to <span class="highlight-discount">50%</span> on furtniture, outdoor and kitchen & homewares.</p>
-                    <a href="#" class="btn btn-primary">Sign up to see deals</a>
+                    <a href="#" class="btn btn-primary" @onclick="ShowSignupModal">See deals</a>
                 </div>
             </div>
         </div>
@@ -58,9 +58,9 @@
             <div class="card my-2" style="width: 18rem;">
                 <img class="card-img-top" src="/images/toys.jpg" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">Toys & Games</h5>
+                    <h5 class="card-title highlight-discount product-title">Toys & Games</h5>
                     <p class="card-text">Massive savings on toys and games with some products discounted up to <span class="highlight-discount">85%</span> Start filling those Christmas stockings :)</p>
-                    <a href="#" class="btn btn-primary">Sign up to see deals</a>
+                    <a href="#" class="btn btn-primary" @onclick="ShowSignupModal">See deals</a>
                 </div>
             </div>
         </div>
@@ -69,6 +69,22 @@
 
 <div class="container my-3">
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Sign Up Now and Save!</button>
+        <button type="button" class="btn btn-primary btn-lg px-4 gap-3" @onclick="ShowSignupModal">Sign Up Now and Save!</button>
     </div>
 </div>
+
+<Modal Title="Sign up for savings" @ref=modal>
+    <ModalContent>
+        <SignupForm />
+    </ModalContent>
+</Modal>
+
+@code {
+
+    Modal modal;
+
+    private async void ShowSignupModal()
+    {
+        await modal.OpenModal();
+    }
+}
