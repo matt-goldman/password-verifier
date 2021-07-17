@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Shared
 
 <div class="px-4 pb-5 my-4">
     <div class="mx-auto d-block mb-2">
@@ -81,7 +82,7 @@
 
 <Modal Title="Validating your credentials..." @ref=validationModal>
     <ModalContent>
-        <PasswordValidator />
+        <PasswordValidator @ref=_validator />
     </ModalContent>
 </Modal>
 
@@ -89,6 +90,7 @@
 
     Modal formModal;
     Modal validationModal;
+    PasswordValidator _validator;
 
     private async void ShowSignupModal()
     {
@@ -99,5 +101,6 @@
     {
         await formModal.CloseModal();
         await validationModal.OpenModal();
+        await _validator.UpdateStatuses();
     }
 }
