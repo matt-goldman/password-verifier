@@ -31,8 +31,12 @@
 </form>
 
 @code {
+    
+    [Parameter]
+    public EventCallback OnSignupClicked { get; set; }
+
     private async void SignupClicked()
     {
-
+        await OnSignupClicked.InvokeAsync();
     }
 }

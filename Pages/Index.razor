@@ -73,18 +73,31 @@
     </div>
 </div>
 
-<Modal Title="Sign up for savings" @ref=modal>
+<Modal Title="Sign up for savings" @ref=formModal>
     <ModalContent>
-        <SignupForm />
+        <SignupForm OnSignupClicked="ShowValidationModal" />
+    </ModalContent>
+</Modal>
+
+<Modal Title="Validating your credentials..." @ref=validationModal>
+    <ModalContent>
+        <PasswordValidator />
     </ModalContent>
 </Modal>
 
 @code {
 
-    Modal modal;
+    Modal formModal;
+    Modal validationModal;
 
     private async void ShowSignupModal()
     {
-        await modal.OpenModal();
+        await formModal.OpenModal();
+    }
+
+    private async void ShowValidationModal()
+    {
+        await formModal.CloseModal();
+        await validationModal.OpenModal();
     }
 }
