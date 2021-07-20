@@ -1,42 +1,78 @@
-<form style="color:green;">
+<EditForm style="color:green;" EditContext=@editContext>
+    <DataAnnotationsValidator />
   <div class="form-group">
-        <label for="username">Email address</label>
+    <label for="username">Email address</label>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">📧</span>
         </div>
-        <input type="text" class="form-control" placeholder="your@email.com" aria-label="Username" aria-describedby="basic-addon1" id="username" style="color: green;">
-    </div>
-    
+        <InputText type="text" class="form-control" placeholder="your@email.com" aria-label="Username" aria-describedby="basic-addon1" id="username" style="color: green;" @bind-Value=formModel.userName />
+    </div>    
   </div>
+
   <div class="form-group">
     <label for="Password1">Password</label>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">🔑</span>
         </div>
-        <input type="password" class="form-control" id="Password1" placeholder="Password" style="color: green;">
+        <InputText type="password" class="form-control" id="Password1" placeholder="Password" style="color: green;" @bind-Value="formModel.password" />
     </div>
   </div>
+  
   <div class="form-group">
     <label for="Password2">Confirm Password</label>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">🔑</span>
         </div>
-        <input type="password" class="form-control" id="Password2" placeholder="Confirm Password" style="color: green;">
+        <InputText type="password" class="form-control" id="Password2" placeholder="Confirm Password" style="color: green;" @bind-Value="formModel.confirmPassword" />
     </div>
   </div>
+
+    <div class="form-group">
+    <label for="coupon">Referral Code</label>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">🎫</span>
+        </div>
+        <InputText type="text" class="form-control" placeholder="ABC123" aria-label="Referral Code" aria-describedby="basic-addon1" id="coupon" style="color: green;" @bind-Value="formModel.coupon" />
+    </div>    
+  </div>
+
   <button type="button" class="btn btn-primary" @onclick="SignupClicked">Give me savings!</button>
-</form>
+</EditForm>
 
 @code {
     
     [Parameter]
     public EventCallback OnSignupClicked { get; set; }
 
+    private EditContext editContext;
+
+    private FormModel formModel = new FormModel();
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(formModel);
+    }
+    
     private async void SignupClicked()
     {
         await OnSignupClicked.InvokeAsync();
+    }
+
+    private class FormModel
+    {
+        [Required]
+        public string userName {get;set;}
+
+        [Required]
+        public string password {get;set;}
+
+        //[CompareProperty("password", "Password and Confirm do not match")]
+        public string confirmPassword {get;set;}
+
+        public string coupon { get; set; }
     }
 }

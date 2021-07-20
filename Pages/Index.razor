@@ -1,5 +1,5 @@
 ﻿@page "/"
-@using Shared
+@inject NavigationManager navigation
 
 <div class="px-4 pb-5 my-4">
     <div class="mx-auto d-block mb-2">
@@ -76,31 +76,24 @@
 
 <Modal Title="Sign up for savings" @ref=formModal>
     <ModalContent>
-        <SignupForm OnSignupClicked="ShowValidationModal" />
-    </ModalContent>
-</Modal>
-
-<Modal Title="Validating your credentials..." @ref=validationModal>
-    <ModalContent>
-        <PasswordValidator @ref=_validator />
+        <SignupForm OnSignupClicked="ShowValidation" />
     </ModalContent>
 </Modal>
 
 @code {
 
     Modal formModal;
-    Modal validationModal;
-    PasswordValidator _validator;
+    
+    
 
     private async void ShowSignupModal()
     {
         await formModal.OpenModal();
     }
 
-    private async void ShowValidationModal()
+    private async void ShowValidation()
     {
         await formModal.CloseModal();
-        await validationModal.OpenModal();
-        await _validator.UpdateStatuses();
+        navigation.NavigateTo("/validate");
     }
 }

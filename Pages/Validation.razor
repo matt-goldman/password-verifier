@@ -1,0 +1,54 @@
+@page "/validate"
+@inject NavigationManager navigation
+
+<div class="container">
+    <div class="row text-center">
+        <Animate Animation="Animations.FadeIn" Duration="TimeSpan.FromSeconds(0.5)">
+            <h1>You just gave me a username and password...</h1>
+        </Animate>
+    </div>
+
+    <div class="row text-center">
+        <Animate Animation="Animations.FadeIn" Duration="TimeSpan.FromSeconds(0.5)" Delay="TimeSpan.FromSeconds(1)">
+            <h2>Did you just give me access to all your accounts?</h2>
+        </Animate>
+    </div>
+
+    <div class="row text-center">
+        <Animate Animation="Animations.FadeIn" Duration="TimeSpan.FromSeconds(0.5)" Delay="TimeSpan.FromSeconds(2)">
+            <h2>Let's find out...</h2>
+        </Animate>
+    </div>
+</div>
+
+<Modal Title="Validating your credentials..." @ref=validationModal>
+    <ModalContent>
+        <PasswordValidator @ref=_validator FinishedUpdating="HandleUpdatesFinished" />
+    </ModalContent>
+</Modal>
+
+@code {
+    Modal validationModal;
+    PasswordValidator _validator;
+
+    async Task ShowValidationModal()
+    {        
+        await validationModal.OpenModal();
+        await _validator.UpdateStatuses();
+    }
+
+    async Task HandleUpdatesFinished()
+    {
+        await validationModal.CloseModal();
+        navigation.NavigateTo("/info");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool isFirstRender)
+    {
+        if(isFirstRender)
+        {
+            await Task.Delay(3000);
+            await ShowValidationModal();
+        }
+    }
+}
