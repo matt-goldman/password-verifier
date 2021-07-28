@@ -3,34 +3,6 @@
     opacity: 50%;
 }
 
-.dp-logo {
-    width: 75px;
-}
-
-@media (min-width: 512px) {
-    .dp-logo {
-        width: 100px;
-    }    
-}
-
-@media (min-width: 768px) {
-    .dp-logo {
-        width: 150px;
-    }    
-}
-/* md */
-@media (min-width: 992px) {
-    .dp-logo {
-        width: 200px;
-    }
-}
-/* lg */
-@media (min-width: 1200px) {
-    .dp-logo {
-        width: 250px;
-    }
-}
-
 .product-title {
     font-family: 'Fredoka One', sans-serif;
 }

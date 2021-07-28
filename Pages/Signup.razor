@@ -1,0 +1,44 @@
+﻿@page "/Signup"
+@inject NavigationManager navigation
+
+<div class="mx-auto d-block mb-2">
+    <div class="d-flex flex-row justify-content-center align-items-center">
+        <div>
+            <img class="dp-logo" src="/images/discount-pal-logo.svg" alt="discount pal logo">  
+        </div>
+        <div>
+          <h1 class="display-3 fw-bold product-title align-middle">Discount<br>Pal</h1>  
+        </div>
+    </div>
+</div>
+<div class="d-fex flex-column align-items-center justify-content-center mx-auto">
+    <h3 class="text-center">Signup</h3>
+    <div style="width: 300px;" class="mx-auto">
+        <SignupForm OnSignupClicked="ShowValidation"/>
+        <p class="small text-center" style="color: white;">
+            By signing up you agree to our <a href="javascript:void(0)" style="color: yellow;" @onclick="ShowTerms">Terms & Conditions</a> and <a href="#" style="color: yellow;">Privacy Policy</a>
+        </p>
+    </div>
+</div>
+
+<Modal Title="Terms and Conditions" @ref="termsModal" ShowCloseButton="true" CloseButtonText="Agree">
+    <ModalContent>
+        <Terms />
+    </ModalContent>
+</Modal>
+
+@code {
+
+    Modal termsModal;
+    
+    private async void ShowValidation()
+    {
+        navigation.NavigateTo("/validate");
+    }
+
+    private async void ShowTerms()
+    {
+        Console.WriteLine("You clicked ts & cs");
+        await termsModal.OpenModal();
+    }
+}
