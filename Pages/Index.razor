@@ -28,7 +28,7 @@
                 <div class="card-body">
                     <h5 class="card-title highlight-discount product-title">Tech</h5>
                     <p class="card-text">Savings of up to <span class="highlight-discount">35%</span> on computers and technology from big names like Samsung, Sony, Nintendo and even Apple.</p>
-                    <a href="#" class="btn btn-primary" @onclick="SignUp">See deals</a>
+                    <a href="javascript:void(0)" class="btn btn-primary" @onclick="ShowDeals">See deals</a>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
                 <div class="card-body">
                     <h5 class="card-title highlight-discount product-title">Fashion</h5>
                     <p class="card-text">Some of the best deals around with savings up to <span class="highlight-discount">65%</span> on clothes and shoes from your favourite fashion brands and retailers.</p>
-                    <a href="#" class="btn btn-primary" @onclick="SignUp">See deals</a>
+                    <a href="javascript:void(0)" class="btn btn-primary" @onclick="ShowDeals">See deals</a>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
                 <div class="card-body">
                     <h5 class="card-title highlight-discount product-title">Home & Garden</h5>
                     <p class="card-text">We've got amazing discounts on Home & Garden, with savings up to <span class="highlight-discount">50%</span> on furtniture, outdoor and kitchen & homewares.</p>
-                    <a href="#" class="btn btn-primary" @onclick="SignUp">See deals</a>
+                    <a href="javascript:void(0)" class="btn btn-primary" @onclick="ShowDeals">See deals</a>
                 </div>
             </div>
         </div>
@@ -61,7 +61,7 @@
                 <div class="card-body">
                     <h5 class="card-title highlight-discount product-title">Toys & Games</h5>
                     <p class="card-text">Massive savings on toys and games with some products discounted up to <span class="highlight-discount">85%</span> Start filling those Christmas stockings :)</p>
-                    <a href="#" class="btn btn-primary" @onclick="SignUp">See deals</a>
+                    <a href="javascript:void(0)" class="btn btn-primary" @onclick="ShowDeals">See deals</a>
                 </div>
             </div>
         </div>
@@ -116,5 +116,10 @@
     private async void ShowTerms()
     {
         await termsModal.OpenModal();
+    }
+
+    private void ShowDeals()
+    {
+        navigation.NavigateTo("/Deals");
     }
 }

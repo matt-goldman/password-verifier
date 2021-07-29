@@ -1,0 +1,163 @@
+﻿@page "/Deals"
+@inject HttpClient _httpClient
+@inject NavigationManager navigation
+
+@if (isLoading)
+{
+    <div class="d-flex justify-content-center align-items-center vw-100 vh-100">
+        <div class="mx-auto my-auto">
+            <p class="text-center">Loading deals..</p>
+            <div class="spinner-border text-primary" role="status"/>
+        </div>
+    </div>
+}
+
+<div class="container">
+    @if (!isLoading)
+    {
+        <div class="px-4 pb-1 my-4">
+            <div class="mx-auto d-block mb-2">
+                <div class="d-flex flex-row justify-content-center align-items-center">
+                    <div>
+                        <img class="dp-logo" src="/images/discount-pal-logo.svg" alt="discount pal logo">  
+                    </div>
+                    <div>
+                        <h1 class="display-3 fw-bold product-title align-middle">Discount<br>Pal</h1>  
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mx-auto">
+                <p class="lead mb-4 text-center">Check out some of the hot deals we've got on offer right now!</p>
+            </div>
+        </div>
+        <div class="d-flex flex-row flex-wrap">
+            @foreach (var product in Products)
+            {
+                string price = $"${product.price:N2}";
+                string discountedPRice = $"${product.discountedPrice:N2}";
+                int subLength = 256;
+
+                if (product.description.Length < subLength)
+                {
+                    subLength = product.description.Length;
+                }
+                
+                string truncatedDescription = $"{product.description.Substring(0, subLength)}..."; 
+                
+                <div class="card my-2 mx-2" style="width: 24rem;">
+                    <img class="card-img-top" src="@product.image" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title highlight-discount product-title">@product.title</h5>
+                        <p class="card-text">
+                            @truncatedDescription
+                            <br/>
+                            <a href="javascript:void(0)" @onclick="SignUp">see more</a>
+                        </p>
+                        <div class="d-flex flex-column justify-content-between align-items-end">
+                            <div>
+                                <del>
+                                    @price
+                                </del>
+                            </div>
+                            <div>
+                                <strong>
+                                    @discountedPRice
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="javascript:void(0)" class="btn btn-primary mt-auto" @onclick="SignUp">Add to cart</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<Modal Title="Sign up to see more" @ref=signupModal>
+    <ModalContent>
+        <SignupForm OnSignupClicked="ShowValidation" OnPrivacyClicked="ShowPrivacy" OnTermsClicked="ShowTerms" />
+    </ModalContent>
+</Modal>
+
+<Modal Title="Terms and Conditions" @ref="termsModal" ShowCloseButton="true" CloseButtonText="Agree" IsLarge="true">
+    <ModalContent>
+        <Terms />
+    </ModalContent>
+</Modal>
+
+<Modal Title="Privacy Policy" @ref="privacyModal" ShowCloseButton="true" CloseButtonText="Agree" IsLarge="true">
+    <ModalContent>
+        <Privacy />
+    </ModalContent>
+</Modal>
+
+@code {
+    string apiUri = "https://fakestoreapi.com/products";
+
+    bool isLoading = true;
+
+    List<Product> Products = new List<Product>();
+    
+    Modal signupModal;
+    Modal termsModal;
+    Modal privacyModal;
+    
+    private void ShowValidation()
+    {
+        navigation.NavigateTo("/validate");
+    }
+
+    private async void ShowPrivacy()
+    {
+        await privacyModal.OpenModal();
+    }
+
+    private async void ShowTerms()
+    {
+        await termsModal.OpenModal();
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var products = await _httpClient.GetFromJsonAsync<Product[]>(apiUri);
+
+            Products = products.ToList();
+
+            isLoading = false;
+            
+            StateHasChanged();
+        }
+    }
+
+    private async void SignUp()
+    {
+        await signupModal.OpenModal();
+    }
+
+    private class Product
+    {
+        private Random _random = new Random();
+        
+        public int id { get; set; }
+        public string title { get; set; }
+        public float price { get; set; }
+        public string description { get; set; }
+        public string category { get; set; }
+        public string image { get; set; }
+
+        public float discountedPrice
+        {
+            get
+            {
+                var discount = (float) _random.Next(65, 95) / 100;
+                return price * discount;
+            }
+        }
+    }
+
+}
