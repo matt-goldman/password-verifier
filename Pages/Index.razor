@@ -76,13 +76,27 @@
 
 <Modal Title="Sign up" @ref=signupModal>
     <ModalContent>
-        <SignupForm OnSignupClicked="ShowValidation" />
+        <SignupForm OnSignupClicked="ShowValidation" OnPrivacyClicked="ShowPrivacy" OnTermsClicked="ShowTerms" />
+    </ModalContent>
+</Modal>
+
+<Modal Title="Terms and Conditions" @ref="termsModal" ShowCloseButton="true" CloseButtonText="Agree" IsLarge="true">
+    <ModalContent>
+        <Terms />
+    </ModalContent>
+</Modal>
+
+<Modal Title="Privacy Policy" @ref="privacyModal" ShowCloseButton="true" CloseButtonText="Agree" IsLarge="true">
+    <ModalContent>
+        <Privacy />
     </ModalContent>
 </Modal>
 
 @code {
 
     Modal signupModal;
+    Modal termsModal;
+    Modal privacyModal;
 
     private async void SignUp()
     {
@@ -92,5 +106,15 @@
     private void ShowValidation()
     {
         navigation.NavigateTo("/validate");
+    }
+
+    private async void ShowPrivacy()
+    {
+        await privacyModal.OpenModal();
+    }
+
+    private async void ShowTerms()
+    {
+        await termsModal.OpenModal();
     }
 }

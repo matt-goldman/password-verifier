@@ -1,5 +1,5 @@
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay;">
-    <div class="modal-dialog" role="document">
+    <div class="@_modalClass" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="color:yellow; font-family:sans-serif;">@Title</h5>
@@ -37,6 +37,9 @@
 
     [Parameter]
     public bool ShowCloseButton { get; set; } = false;
+
+    [Parameter]
+    public bool IsLarge { get; set; } = false;
     
     [Parameter]
     public string CloseButtonText { get; set; }
@@ -44,6 +47,8 @@
     public string ModalDisplay = "none;";
     public string ModalClass = "";
     public bool ShowBackdrop = false;
+
+    private string _modalClass => IsLarge ? "modal-dialog modal-lg" : "modal-dialog";
 
     public async Task OpenModal()
     {
