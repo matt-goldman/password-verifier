@@ -24,9 +24,11 @@ namespace password_verifier.Services
 
         public async Task<List<Review>> GetReviews()
         {
-            var profiles = await _client.GetFromJsonAsync<Result[]>(ApiUri);
+            var profiles = await _client.GetFromJsonAsync<Root>(ApiUri);
+
+            var dataUri = $"{Program.baseAddress}sample-data/reviews.json";
             
-            var reviewData = await _client.GetFromJsonAsync<ReviewDummyData[]>("sample-data/reviews.json");
+            var reviewData = await _client.GetFromJsonAsync<ReviewDummyData[]>(dataUri);
 
             List<Review> reviews = new List<Review>();
 
@@ -34,11 +36,16 @@ namespace password_verifier.Services
 
             int i = 0;
             
-            foreach (var profile in profiles)
+            foreach (var profile in profiles.results)
             {
-                reviews.Add(new Review()
+                reviews.Add(new Review
                 {
-                    
+                    Rating = reviewData[i].rating,
+                    ProductName = reviewData[i].product,
+                    ReviewerLocation = $"{profile.location.state}, {profile.location.country}",
+                    ReviewerName = profile.name.first,
+                    ReviewerProfilePicUrl = profile.picture.medium,
+                    ReviewText = reviewData[i].review
                 });
                 i++;
             }

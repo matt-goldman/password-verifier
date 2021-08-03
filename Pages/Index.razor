@@ -1,5 +1,8 @@
 ﻿@page "/"
+@using Shared
 @inject NavigationManager navigation
+@inject ReviewsService _reviewService
+@inject IJSRuntime JsRuntime
 
 <div class="px-4 pb-5 my-4">
     <div class="mx-auto d-block mb-2">
@@ -74,6 +77,41 @@
     </div>
 </div>
 
+<div class="container my-3">
+    @if (LoadingReviews)
+    {
+        <div class="mx-auto my-auto">
+            <div class="spinner-border text-primary" role="status"/>
+        </div>
+    }
+    else
+    {
+        <div class="container mt-2">
+            <div id="carouselExampleIndicators" class="carousel slide w-100" data-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach (var review in reviews)
+                    {
+                        string activeClass = string.Empty;
+                        if (reviews[0] == review)
+                        {
+                            activeClass = "active";
+                        }
+                        <div class="carousel-item w-100 @activeClass">
+                            <ReviewCard Location="@review.ReviewerLocation"
+                                        Rating="@review.Rating"
+                                        ProductName="@review.ProductName"
+                                        Purchased="@review.PurchaseDate"
+                                        User="@review.ReviewerName"
+                                        ProfilePic="@review.ReviewerProfilePicUrl"
+                                        Review="@review.ReviewText"/>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
 <Modal Title="Sign up" @ref=signupModal>
     <ModalContent>
         <SignupForm OnSignupClicked="ShowValidation" OnPrivacyClicked="ShowPrivacy" OnTermsClicked="ShowTerms" />
@@ -97,6 +135,10 @@
     Modal signupModal;
     Modal termsModal;
     Modal privacyModal;
+
+    List<Review> reviews;
+
+    bool LoadingReviews { get; set; } = true;
 
     private async void SignUp()
     {
@@ -122,4 +164,17 @@
     {
         navigation.NavigateTo("/Deals");
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            reviews = await _reviewService.GetReviews();
+            LoadingReviews = false;
+            StateHasChanged();
+            
+        }
+        await JsRuntime.InvokeAsync<object>("initializeCarousel");
+    }
+
 }
