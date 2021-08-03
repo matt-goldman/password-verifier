@@ -1,4 +1,5 @@
 ﻿@page "/Deals"
+@using Shared
 @inject HttpClient _httpClient
 @inject NavigationManager navigation
 
@@ -33,41 +34,44 @@
         <div class="d-flex flex-row flex-wrap">
             @foreach (var product in Products)
             {
-                string price = $"${product.price:N2}";
-                string discountedPRice = $"${product.discountedPrice:N2}";
-                int subLength = 256;
-
-                if (product.description.Length < subLength)
-                {
-                    subLength = product.description.Length;
-                }
-                
-                string truncatedDescription = $"{product.description.Substring(0, subLength)}..."; 
-                
                 <div class="card my-2 mx-2" style="width: 24rem;">
                     <img class="card-img-top" src="@product.image" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title highlight-discount product-title">@product.title</h5>
-                        <p class="card-text">
-                            @truncatedDescription
-                            <br/>
-                            <a href="javascript:void(0)" @onclick="SignUp">see more</a>
-                        </p>
-                        <div class="d-flex flex-column justify-content-between align-items-end">
-                            <div>
-                                <del>
-                                    @price
-                                </del>
-                            </div>
-                            <div class="text-success">
-                                <strong>
-                                    @discountedPRice
-                                </strong>
+                        <div class="d-flex flex-column justify-content-between h-100">
+                            <h5 class="card-title highlight-discount product-title">@product.title</h5>
+                            <p class="card-text">
+                                @product.TruncatedDescription
+                                <br/>
+                                <a href="javascript:void(0)" @onclick="SignUp">see more</a>
+                            </p>
+                            <div class="my-auto"> &nbsp; </div>
+                            <div class="d-flex justify-content-between mt-auto">
+                                <div class="d-flex flex-column justify-content-between">
+                                    <div>
+                                        @for (int i = 0; i < product.Rating; i++)
+                                        {
+                                            <span>⭐</span>
+                                        }
+                                    </div>
+                                    <span>@product.NumberOfReviews reviews</span>
+                                </div>
+                                <div class="d-flex flex-column justify-content-between align-items-end">
+                                    <div>
+                                        <del>
+                                            @product.Price
+                                        </del>
+                                    </div>
+                                    <div class="font-weight-bold" style="color: #4bf38a; font-size: large">
+                                        <strong>@product.DiscountedPrice</strong>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="javascript:void(0)" class="btn btn-primary mt-auto" @onclick="SignUp">Add to cart</a>
+                        <div class="d-flex flex-row justify-content-end">
+                            <a href="javascript:void(0)" class="btn btn-primary mt-auto ml-auto mr-2" @onclick="SignUp">Add to cart <span class="oi oi-cart" aria-hidden="true"></span> </a>
+                        </div>
                     </div>
                 </div>
             }
@@ -137,27 +141,6 @@
     private async void SignUp()
     {
         await signupModal.OpenModal();
-    }
-
-    private class Product
-    {
-        private Random _random = new Random();
-        
-        public int id { get; set; }
-        public string title { get; set; }
-        public float price { get; set; }
-        public string description { get; set; }
-        public string category { get; set; }
-        public string image { get; set; }
-
-        public float discountedPrice
-        {
-            get
-            {
-                var discount = (float) _random.Next(65, 95) / 100;
-                return price * discount;
-            }
-        }
     }
 
 }
